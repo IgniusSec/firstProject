@@ -1,5 +1,6 @@
 package br.edu.ifmg.produto.resources;
 
+import br.edu.ifmg.produto.dtos.CategoryDTO;
 import br.edu.ifmg.produto.entities.Category;
 import br.edu.ifmg.produto.repository.CategoryRepository;
 import br.edu.ifmg.produto.services.CategoryService;
@@ -19,8 +20,8 @@ public class CategoryResource {
     private CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<List<Category>> findAll(){
-        List<Category> categories = categoryService.findAll();
+    public ResponseEntity<List<CategoryDTO>> findAll(){
+        List<CategoryDTO> categories = categoryService.findAll();
 
         return ResponseEntity.ok().body(categories);
     }
