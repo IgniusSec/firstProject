@@ -1,3 +1,3 @@
-insert into category ( name ) values 'teste';
-insert into category ( name ) values '2';
-insert into category ( name ) values '#';
+insert into category ( name, created_at ) values ('teste', NOW());
+insert into category ( name, created_at  ) values ('2', NOW());
+insert into category ( name, created_at ) values ('#', NOW());
