@@ -1,4 +1,5 @@
 package br.edu.ifmg.produto.entities;
+<<<<<<< HEAD
 import br.edu.ifmg.produto.dtos.CategoryDTO;
 import jakarta.persistence.*;
 import java.time.Instant;
@@ -8,6 +9,13 @@ import java.util.Set;
 
 @Entity
 @Table(name = "product")
+=======
+import jakarta.persistence.*;
+import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
+
+>>>>>>> 12e728f844bae804c7a188d8df551a1d1a5ccb18
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +23,10 @@ public class Product {
     private String name;
     private String description;
     private double price;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 12e728f844bae804c7a188d8df551a1d1a5ccb18
     private String imageUrl;
     private Instant createAt;
     private Instant updateAt;
@@ -25,7 +36,11 @@ public class Product {
         name = "product_category", joinColumns = @JoinColumn(name="product_id"), 
         inverseJoinColumns = @JoinColumn(name="category_id")
     )
+<<<<<<< HEAD
     private Set<CategoryDTO> categories = new HashSet<CategoryDTO>();
+=======
+    private Set<Category> categories = new HashSet<>();
+>>>>>>> 12e728f844bae804c7a188d8df551a1d1a5ccb18
 
     public Product() {}
 
@@ -39,6 +54,7 @@ public class Product {
     
     public Product(Product entity) {
         this.id = entity.getId();
+<<<<<<< HEAD
         this.name = entity.getName();
         this.description = entity.getDescription();
         this.price = entity.getPrice();
@@ -58,6 +74,12 @@ public class Product {
 
     public void setCategories(Set<CategoryDTO> categories) {
         this.categories = categories;
+=======
+    }
+
+    public Product(Product product, Set<Category> category) {
+        this(product);
+>>>>>>> 12e728f844bae804c7a188d8df551a1d1a5ccb18
     }
 
     public Long getId() {
@@ -100,6 +122,7 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
+<<<<<<< HEAD
     @PrePersist
     public void prePersist() {
         this.createAt = Instant.now();
@@ -113,11 +136,17 @@ public class Product {
     public void PreUpdate() {
         this.updateAt = Instant.now();
     }
+=======
+    public Instant getCreateAt() {
+        return createAt;
+    }
+>>>>>>> 12e728f844bae804c7a188d8df551a1d1a5ccb18
 
     public Instant getUpdateAt() {
         return updateAt;
     }
 
+<<<<<<< HEAD
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Product product)) return false;
@@ -128,4 +157,6 @@ public class Product {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+=======
+>>>>>>> 12e728f844bae804c7a188d8df551a1d1a5ccb18
 }
