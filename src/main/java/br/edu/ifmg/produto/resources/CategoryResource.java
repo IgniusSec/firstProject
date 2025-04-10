@@ -54,12 +54,10 @@ public class CategoryResource {
     @PutMapping(value = "/{id}")
     public ResponseEntity<CategoryDTO> update(@RequestBody CategoryDTO dto, @PathVariable Long id) {
         dto = categoryService.update(id, dto);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
-
-        return ResponseEntity.created(uri).body(dto);
+        return ResponseEntity.ok().body(dto);
     }
     
-    @PutMapping(value = "/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         categoryService.delete(id);
         return ResponseEntity.noContent().build();
