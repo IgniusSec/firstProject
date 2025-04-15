@@ -86,6 +86,10 @@ public class ProductDTO {
         return Objects.equals(id, that.id);
     }
 
+    public Set<CategoryDTO> getCategories() {
+        return categories;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
