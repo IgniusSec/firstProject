@@ -5,6 +5,7 @@ import br.edu.ifmg.produto.dtos.ProductDTO;
 import br.edu.ifmg.produto.entities.Category;
 import br.edu.ifmg.produto.entities.Product;
 import br.edu.ifmg.produto.repository.ProductRepository;
+import br.edu.ifmg.produto.resources.ProductResource;
 import br.edu.ifmg.produto.services.exceptions.DatabaseException;
 import br.edu.ifmg.produto.services.exceptions.ResourceNotFound;
 import jakarta.persistence.EntityNotFoundException;
@@ -14,7 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import java.util.Optional;
 
 @Service
@@ -25,14 +27,18 @@ public class ProductService {
     @Transactional(readOnly = true)
     public Page<ProductDTO> findAll(Pageable pageable) {
         Page<Product> list = productRepository.findAll(pageable);
-        return list.map(product -> new ProductDTO(product));
+        return list.map(product -> new ProductDTO(product)
+                .add(linkTo(methodOn(ProductResource.class).findAll(null)).withSelfRel())
+                .add(linkTo(methodOn(ProductResource.class).findById(product.getId())).withRel("Get a product")));
     }
 
     @Transactional(readOnly = true)
     public ProductDTO findById(Long id) {
         Optional<Product> obj = productRepository.findById(id);
         Product product = obj.orElseThrow(() -> new ResourceNotFound("Product Not Found!" + id));
-        return new ProductDTO(product);
+        return new ProductDTO(product)
+               // .add(linkTo(methodOn()).withSelfRel(), linkTo(methodOn()).withRel("All products"), linkTo(methodOn()).withRel("Update product"), linkTo(methodOn()).withRel("Delete Product"))
+                ;
     }
 
     @Transactional
