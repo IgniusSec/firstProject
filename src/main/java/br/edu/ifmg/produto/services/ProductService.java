@@ -1,6 +1,5 @@
 package br.edu.ifmg.produto.services;
 
-import br.edu.ifmg.produto.dtos.CategoryDTO;
 import br.edu.ifmg.produto.dtos.ProductDTO;
 import br.edu.ifmg.produto.entities.Category;
 import br.edu.ifmg.produto.entities.Product;
@@ -37,7 +36,10 @@ public class ProductService {
         Optional<Product> obj = productRepository.findById(id);
         Product product = obj.orElseThrow(() -> new ResourceNotFound("Product Not Found!" + id));
         return new ProductDTO(product)
-               // .add(linkTo(methodOn()).withSelfRel(), linkTo(methodOn()).withRel("All products"), linkTo(methodOn()).withRel("Update product"), linkTo(methodOn()).withRel("Delete Product"))
+                .add(linkTo(methodOn(ProductResource.class).findById(product.getId())).withSelfRel(),
+                        linkTo(methodOn(ProductResource.class).findAll(null)).withRel("All products"),
+                        linkTo(methodOn(ProductResource.class).update(product.getId(), null)).withRel("Update product"),
+                        linkTo(methodOn(ProductResource.class).delete(product.getId())).withRel("Delete Product"))
                 ;
     }
 
@@ -47,7 +49,12 @@ public class ProductService {
         copyDTOToEntity(dto, entity);
 
         entity = productRepository.save(entity);
-        return new ProductDTO(entity);
+        return new ProductDTO(entity)
+                .add(linkTo(methodOn(ProductResource.class).findById(entity.getId())).withRel("Find a product"),
+                        linkTo(methodOn(ProductResource.class).findAll(null)).withRel("All products"),
+                        linkTo(methodOn(ProductResource.class).update(entity.getId(), new ProductDTO(entity))).withRel("Update product"),
+                        linkTo(methodOn(ProductResource.class).delete(entity.getId())).withRel("Delete Product"))
+                ;
     }
 
     @Transactional
@@ -56,7 +63,11 @@ public class ProductService {
             Product entity = productRepository.getReferenceById(id);
             copyDTOToEntity(dto, entity);
             entity = productRepository.save(entity);
-            return new ProductDTO(entity);
+            return new ProductDTO(entity)
+                    .add(linkTo(methodOn(ProductResource.class).findById(entity.getId())).withRel("Find a product"),
+                            linkTo(methodOn(ProductResource.class).findAll(null)).withRel("All products"),
+                            linkTo(methodOn(ProductResource.class).delete(entity.getId())).withRel("Delete Product"))
+                    ;
         }
         catch (EntityNotFoundException e) {
             throw new ResourceNotFound("Product not Found: " + id);
