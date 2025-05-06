@@ -15,9 +15,11 @@ public class Product {
     private String name;
     private String description;
     private double price;
-    private String imageUrl;
-    private Instant createAt;
-    private Instant updateAt;
+    private String imageURL;
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    private Instant createdAt;
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    private Instant updatedAt;
 
     @ManyToMany
     @JoinTable(
@@ -33,7 +35,7 @@ public class Product {
         this.name = name;
         this.description = description;
         this.price = price;
-        this.imageUrl = imageUrl;
+        this.imageURL = imageUrl;
     }
     
     public Product(Product entity) {
@@ -41,9 +43,9 @@ public class Product {
         this.name = entity.getName();
         this.description = entity.getDescription();
         this.price = entity.getPrice();
-        this.imageUrl = entity.getImageUrl();
-        this.createAt = entity.getCreateAt();
-        this.updateAt = entity.getUpdateAt();
+        this.imageURL = entity.getImageUrl();
+        this.createdAt = entity.getCreateAt();
+        this.updatedAt = entity.getUpdateAt();
     }
 
     public Set<Category> getCategories() {
@@ -92,29 +94,29 @@ public class Product {
     }
 
     public String getImageUrl() {
-        return imageUrl;
+        return imageURL;
     }
 
     public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+        this.imageURL = imageUrl;
     }
 
     @PrePersist
     public void prePersist() {
-        this.createAt = Instant.now();
+        this.createdAt = Instant.now();
     }
 
     public Instant getCreateAt() {
-        return createAt;
+        return createdAt;
     }
     
     @PreUpdate
     public void PreUpdate() {
-        this.updateAt = Instant.now();
+        this.updatedAt = Instant.now();
     }
 
     public Instant getUpdateAt() {
-        return updateAt;
+        return updatedAt;
     }
 
     @Override
