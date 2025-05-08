@@ -37,11 +37,11 @@ public class ProductRepositoryTest {
     @DisplayName(value = "Verificando autoincremento da PK")
     public void insertShouldPersistWithAutoIncrementIdWhenIdZero() {
         Product product = Factory.createProduct();
-        product.setId(0L);
+        //product.setId(0L);
         Product p = productRepository.save(product);
         Optional<Product> obj = productRepository.findById(p.getId());
         Assertions.assertTrue(obj.isPresent());
         Assertions.assertNotEquals(0, obj.get().getId());
-        //Assertions.assertEquals(26, obj.get().getId());
+        Assertions.assertEquals(26, obj.get().getId());
     }
 }
