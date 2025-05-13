@@ -3,7 +3,9 @@ package br.edu.ifmg.produto.entities;
 import br.edu.ifmg.produto.dtos.CategoryDTO;
 import jakarta.persistence.*;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "category")
@@ -14,9 +16,13 @@ public class Category {
     private String name;
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private Instant createAt;
+    private Instant createdAt;
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private Instant updateAt;
+    private Instant updatedAt;
+
+    // FetchType.Lazy traz sob demanda | FetchType.EAGER traz sempre junto a category
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
+    private Set<Product> products = new HashSet<>();
 
     public Category() {
     }
@@ -66,20 +72,28 @@ public class Category {
     }
 
     public Instant getCreateAt() {
-        return createAt;
+        return createdAt;
     }
 
     public Instant getUpdateAt() {
-        return updateAt;
+        return updatedAt;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
     }
 
     @PrePersist
     private void prePersist() {
-        createAt = Instant.now();
+        createdAt = Instant.now();
     }
 
     @PreUpdate
     private void preUpdate() {
-        updateAt = Instant.now();
+        updatedAt = Instant.now();
     }
 }

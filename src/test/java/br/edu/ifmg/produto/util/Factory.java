@@ -10,7 +10,7 @@ public class Factory {
         p.setName("IFome XXX");
         p.setPrice(4500.23);
         p.setImageUrl("https://img.com/imagem.jpg");
-        p.getCategories().add(new Category(60L, "News"));
+        p.getCategories().add(new Category(2L, "Eletrônicos"));
         return p;
     }
 
