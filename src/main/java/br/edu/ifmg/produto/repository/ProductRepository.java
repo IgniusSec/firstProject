@@ -16,23 +16,45 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             value = """
                     SELECT *
                     FROM (
-                        SELECT DISTINCT p.id, p.name, p.image_url, p.price
+                        SELECT DISTINCT p.id, p.name, p.imageUrl, p.price
                         FROM product p
                         INNER JOIN product_category pc ON pc.product_id = p.id
-                        WHERE (:categoriesID IS NULL || pc.category_id in :categoriesID)
+                        WHERE (pc.category_id in :categoriesID)
                         AND LOWER(p.name) like LOWER(CONCAT('%',:name,'%'))
                     ) as result
                     """,
             countQuery = """
                         SELECT COUNT(*)
                         FROM (
-                            SELECT DISTINCT p.id, p.name, p.image_url, p.price
+                            SELECT DISTINCT p.id, p.name, p.imageUrl, p.price
                             FROM product p
                             INNER JOIN product_category pc ON pc.product_id = p.id
-                            WHERE (:categoriesID IS NULL || pc.category_id in :categoriesID)
+                            WHERE (pc.category_id in :categoriesID)
                             AND LOWER(p.name) like LOWER(CONCAT('%',:name,'%'))
                         ) as result
                         """
     )
-    public Page<ProductProjection> searchProducts(List<Long> categoriesID, String name, Pageable pageable);
+    public Page<ProductProjection> searchProductsWithCategories(List<Long> categoriesID, String name, Pageable pageable);
+
+    @Query(nativeQuery = true,
+            value = """
+                    SELECT *
+                    FROM (
+                        SELECT DISTINCT p.id, p.name, p.imageUrl, p.price
+                        FROM product p
+                        INNER JOIN product_category pc ON pc.product_id = p.id
+                        WHERE LOWER(p.name) like LOWER(CONCAT('%',:name,'%'))
+                    ) as result
+                    """,
+            countQuery = """
+                        SELECT COUNT(*)
+                        FROM (
+                            SELECT DISTINCT p.id, p.name, p.imageUrl, p.price
+                            FROM product p
+                            INNER JOIN product_category pc ON pc.product_id = p.id
+                            WHERE LOWER(p.name) like LOWER(CONCAT('%',:name,'%'))
+                        ) as result
+                        """
+    )
+    public Page<ProductProjection> searchProductsWithoutCategories(String name, Pageable pageable);
 }
